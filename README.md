@@ -11,7 +11,7 @@ Install this tool to an alias in `$PROJECT/deps.edn` or `$HOME/.clojure/deps.edn
   :aliases {:depstar
               {:extra-deps
                  {com.healthfinch/depstar {:git/url "https://github.com/healthfinch/depstar.git"
-                                           :sha "LATEST_SHA"}}}}
+                                           :sha "4aa7b35189693feebc7d7e4a180b8af0326c9164"}}}}
 }
 ```
 
