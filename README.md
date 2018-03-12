@@ -1,5 +1,7 @@
 # depstar
 
+<img src="./depstar_logo.png" />
+
 a clj-based uberjarrer
 
 # Usage
