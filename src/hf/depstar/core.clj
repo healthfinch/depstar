@@ -13,6 +13,8 @@
     :default (cwd)]
 
    ["-o" "--output NAME" "Name of output jar"]
+
+   ["-e" "--exclude REGEX" "Exclude jars matching REGEX"]
    
    ;; A boolean option defaulting to nil
    ["-h" "--help"]])

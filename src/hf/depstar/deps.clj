@@ -13,7 +13,7 @@
 (defmethod depstar/copy-source*
   ::preserve-jar
   [src dest options]
-  (prn "copy-source* preserve-jar" src dest)
+  (println "copying from" src)
   (let [source (depstar/path src)
         name   (.getFileName source)
         target (.resolve ^Path dest name)]
@@ -22,13 +22,13 @@
                    target)))
 
 (defn run
-  [{:keys [prefix output] :as options}]
+  [{:keys [prefix output exclude] :as options}]
   (println "Preparing deps ...")
   (prefer-method depstar/copy-source* ::preserve-jar :hf.depstar.uberjar/consume-jar)
   (let [dest   prefix
-        xf     (comp (remove depstar/depstar-itself?)
-                     (filter (comp #{::depstar/jar}
-                                   depstar/classify)))
+        xf     (cond-> (comp (remove depstar/depstar-itself?)
+                             (filter (comp #{::depstar/jar} depstar/classify)))
+                 exclude (comp (remove #(re-find (re-pattern exclude) %))))
         jar-cp (into [] xf (depstar/current-classpath))]
 
     (println "Copying deps...")
