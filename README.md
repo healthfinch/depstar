@@ -23,6 +23,33 @@ Create an uberjar by invoking `depstar` with the desired jar name:
 clj -A:depstar -m hf.depstar.uberjar MyProject.jar
 ```
 
+By default, the jar file does not include a manifest and cannot be run
+directly. An optional, second argument can be provided to specify a main
+namespace to be used as `Main-Class` in a minimal manifest. `-m` can be
+used as a shorthand for `clojure.main`:
+
+```bash
+clj -A:depstar -m hf.depstar.uberjar MyProject.jar -m
+java -jar MyProject.jar
+```
+
+This will run `clojure.main/-main` and start a REPL. All of the usual
+`clojure.main` options will work here. For example:
+
+```bash
+java -jar MyProject.jar -m my.project
+```
+
+This will run `my.project/-main`. You could specify that as the main
+namespace when building the jar file:
+
+```bash
+clj -A:depstar -m hf.depstar.uberjar MyProject.jar my.project
+java -jar MyProject.jar
+```
+
+This will run `my.project/-main` as the jar file's main entry point.
+
 `depstar` uses the classpath computed by `clj`.
 For example, add web assets into an uberjar by including an alias in your `deps.edn`:
 
