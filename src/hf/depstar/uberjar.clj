@@ -8,7 +8,8 @@
                           FileVisitResult FileVisitor
                           Path]
            [java.nio.file.attribute BasicFileAttributes FileAttribute]
-           [java.util.jar JarInputStream JarOutputStream JarEntry]))
+           [java.util.jar JarInputStream JarOutputStream JarEntry
+                          Manifest Attributes$Name]))
 
 ;; future:
 ;; other knobs?
@@ -156,11 +157,24 @@
   [src dest options]
   (copy-source* src dest options))
 
+;; copied from https://github.com/boot-clj/boot/blob/master/boot/pod/src/boot/jar.clj#L12
+(defn- create-manifest [main ext-attrs]
+  (let [manifest (Manifest.)]
+    (let [attributes (.getMainAttributes manifest)]
+      (.put attributes Attributes$Name/MANIFEST_VERSION "1.0")
+      (when-let [m (and main (.replaceAll (str main) "-" "_"))]
+        (.put attributes Attributes$Name/MAIN_CLASS m))
+      (doseq [[k v] ext-attrs]
+        (.put attributes (Attributes$Name. (name k)) v)))
+    manifest))
+
 (defn write-jar
-  [^Path src ^Path target]
+  [^Path src ^Path target manifest]
   (with-open [os (-> target
                      (Files/newOutputStream (make-array OpenOption 0))
-                     JarOutputStream.)]
+                     (cond->
+                       manifest (JarOutputStream. manifest)
+                       (not manifest) (JarOutputStream.)))]
     (let [walker (reify FileVisitor
                    (visitFile [_ p attrs]
                      (.putNextEntry os (JarEntry. (.toString (.relativize src p))))
@@ -187,13 +201,19 @@
   (re-find #"depstar" p))
 
 (defn run
-  [{:keys [dest] :as options}]
+  [{:keys [dest main] :as options}]
   (let [tmp (Files/createTempDirectory "uberjar" (make-array FileAttribute 0))
         cp (into [] (remove depstar-itself?) (current-classpath))]
     (run! #(copy-source % tmp options) cp)
     (println "Writing jar...")
-    (write-jar tmp (path dest))))
+    (write-jar tmp (path dest)
+               (when main
+                 (create-manifest main nil)))))
 
 (defn -main
-  [destination]
-  (run {:dest destination}))
+  [destination & [main]]
+  (run {:dest destination
+        :main (when main
+                (if (= "-m" main)
+                  "clojure.main"
+                  main))}))
