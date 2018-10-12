@@ -37,6 +37,13 @@ Then invoke `depstar` with the chosen aliases:
 clj -A:depstar:webassets -m hf.depstar.uberjar MyProject.jar
 ```
 
+Note that `depstar` does no AOT compilation and does not add a manifest to the jar file. You can run the uberjar as follows
+(assuming `project.core` is your main namespace):
+
+```bash
+java -cp MyProject.jar clojure.main -m project.core
+```
+
 # License
 
 The use and distribution terms for this software are covered by the
