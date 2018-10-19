@@ -87,7 +87,7 @@
                      java.io.BufferedInputStream.
                      JarInputStream.)]
     (loop []
-      (when-let [entry (.getNextJarEntry is)]
+      (when-let [entry (try (.getNextJarEntry is) (catch Exception _))]
         (f is entry)
         (recur)))))
 
