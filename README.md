@@ -2,7 +2,7 @@
 
 <img src="./depstar_logo.png" />
 
-a clj-based uberjarrer
+a clj-based uberjarrer (forked from [healthfinch/depstar](https://github.com/healthfinch/depstar) and enhanced)
 
 # Usage
 
@@ -12,8 +12,8 @@ Install this tool to an alias in `$PROJECT/deps.edn` or `$HOME/.clojure/deps.edn
 {
   :aliases {:depstar
               {:extra-deps
-                 {com.healthfinch/depstar {:git/url "https://github.com/healthfinch/depstar.git"
-                                           :sha "4aa7b35189693feebc7d7e4a180b8af0326c9164"}}}}
+                 {seancorfield/depstar {:git/url "https://github.com/seancorfield/depstar.git"
+                                        :sha "22859a04cc99ce38c391a569b771e8a65afa6aad"}}}}
 }
 ```
 
@@ -21,6 +21,12 @@ Create an uberjar by invoking `depstar` with the desired jar name:
 
 ```bash
 clj -A:depstar -m hf.depstar.uberjar MyProject.jar
+```
+
+Create a (library) jar by invoking `depstar` with the desired jar name:
+
+```bash
+clj -A:depstar -m hf.depstar.jar MyLib.jar
 ```
 
 `depstar` uses the classpath computed by `clj`.

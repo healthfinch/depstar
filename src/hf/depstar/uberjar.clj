@@ -60,9 +60,8 @@
 
 (defmethod clash
   :default
-  [_ in target]
+  [_ in target])
   ;; do nothing, first file wins
-  )
 
 (defn excluded?
   [filename]
@@ -114,14 +113,15 @@
 (defmethod copy-source*
   :jar
   [src dest options]
-  (consume-jar (path src)
-    (fn [inputstream ^JarEntry entry]
-      (let [name (.getName entry)
-            target (.resolve ^Path dest name)]
-        (if (.isDirectory entry)
-          (Files/createDirectories target (make-array FileAttribute 0))
-          (do (Files/createDirectories (.getParent target) (make-array FileAttribute 0))
-              (copy! name inputstream target)))))))
+  (when-not (= :thin (:jar options))
+    (consume-jar (path src)
+      (fn [inputstream ^JarEntry entry]
+        (let [name (.getName entry)
+              target (.resolve ^Path dest name)]
+          (if (.isDirectory entry)
+            (Files/createDirectories target (make-array FileAttribute 0))
+            (do (Files/createDirectories (.getParent target) (make-array FileAttribute 0))
+                (copy! name inputstream target))))))))
 
 (defn copy-directory
   [^Path src ^Path dest]
