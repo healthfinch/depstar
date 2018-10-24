@@ -3,8 +3,17 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>seancorfield</groupId>
   <artifactId>depstar</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <name>depstar</name>
+
+  <description>a clj-based uberjarrer</description>
+  <url>https://github.com/seancorfield/depstar</url>
+  <licenses>
+    <license>
+      <name>Eclipse Public License</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
