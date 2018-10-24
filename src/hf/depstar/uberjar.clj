@@ -187,11 +187,11 @@
   (re-find #"depstar" p))
 
 (defn run
-  [{:keys [dest] :as options}]
+  [{:keys [dest jar] :or {jar :uber} :as options}]
   (let [tmp (Files/createTempDirectory "uberjar" (make-array FileAttribute 0))
         cp (into [] (remove depstar-itself?) (current-classpath))]
     (run! #(copy-source % tmp options) cp)
-    (println "Writing jar...")
+    (println "Writing" (name jar) "jar:" dest)
     (write-jar tmp (path dest))))
 
 (defn -main
