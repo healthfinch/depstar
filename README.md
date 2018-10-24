@@ -12,8 +12,7 @@ Install this tool to an alias in `$PROJECT/deps.edn` or `$HOME/.clojure/deps.edn
 {
   :aliases {:depstar
               {:extra-deps
-                 {seancorfield/depstar {:git/url "https://github.com/seancorfield/depstar.git"
-                                        :sha "10d25e6e8e81bfaaf96002e9cce675772d60a356"}}}}
+                 {seancorfield/depstar {:mvn/version "0.1.2"}}}}
 }
 ```
 
