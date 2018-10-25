@@ -73,11 +73,14 @@
 
 (defn copy!
   ;; filename drives strategy
-  [filename ^InputStream in ^Path target]
+  [filename ^InputStream in ^Path target & [last-mod]]
   (when-not (excluded? filename)
     (if (Files/exists target (make-array LinkOption 0))
       (clash filename in target)
-      (Files/copy in target ^"[Ljava.nio.file.CopyOption;" (make-array CopyOption 0)))))
+      (do
+        (Files/copy in target ^"[Ljava.nio.file.CopyOption;" (make-array CopyOption 0))
+        (when last-mod
+          (Files/setLastModifiedTime target last-mod))))))
 
 (defn consume-jar
   [^Path path f]
@@ -117,11 +120,12 @@
     (consume-jar (path src)
       (fn [inputstream ^JarEntry entry]
         (let [name (.getName entry)
+              last-mod (.getLastModifiedTime entry)
               target (.resolve ^Path dest name)]
           (if (.isDirectory entry)
             (Files/createDirectories target (make-array FileAttribute 0))
             (do (Files/createDirectories (.getParent target) (make-array FileAttribute 0))
-                (copy! name inputstream target))))))))
+                (copy! name inputstream target last-mod))))))))
 
 (defn copy-directory
   [^Path src ^Path dest]
@@ -163,7 +167,9 @@
                      JarOutputStream.)]
     (let [walker (reify FileVisitor
                    (visitFile [_ p attrs]
-                     (.putNextEntry os (JarEntry. (.toString (.relativize src p))))
+                     (let [t (.lastModifiedTime attrs)
+                           e (JarEntry. (.toString (.relativize src p)))]
+                       (.putNextEntry os (.setLastModifiedTime e t)))
                      (Files/copy p os)
                      FileVisitResult/CONTINUE)
                    (preVisitDirectory [_ p attrs]

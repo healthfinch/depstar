@@ -12,7 +12,7 @@ Install this tool to an alias in `$PROJECT/deps.edn` or `$HOME/.clojure/deps.edn
 {
   :aliases {:depstar
               {:extra-deps
-                 {seancorfield/depstar {:mvn/version "0.1.3"}}}}
+                 {seancorfield/depstar {:mvn/version "0.1.4"}}}}
 }
 ```
 

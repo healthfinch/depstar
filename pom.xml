@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>seancorfield</groupId>
   <artifactId>depstar</artifactId>
-  <version>0.1.3</version>
+  <version>0.1.4</version>
   <name>depstar</name>
 
   <description>a clj-based uberjarrer</description>
@@ -27,8 +27,8 @@
   <scm>
     <connection>scm:git:git@github.com:seancorfield/depstar.git</connection>
     <developerConnection>scm:git:git@github.com:seancorfield/depstar.git</developerConnection>
-    <url>git@github.com:seancorfield/depstar.git</url>
-    <tag>b8736f14204a63ba089395eb6f2e26656e0b36b5</tag>
+    <url>https://github.com/seancorfield/depstar</url>
+    <tag>1268cc280221aa6171b35a68f9a64d22cb4904ab</tag>
   </scm>
 
   <dependencies>
