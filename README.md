@@ -1,3 +1,6 @@
+:warning: *This project is archived. For active development, see
+[seancorfield/depstar](https://github.com/seancorfield/depstar)* :warning:
+
 # depstar
 
 <img src="./depstar_logo.png" />
